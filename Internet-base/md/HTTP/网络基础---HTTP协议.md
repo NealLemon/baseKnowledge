@@ -2,6 +2,8 @@
 
 笔记只是通过学习以及网上的博文对自己需要的内容进行梳理和记录。
 
+# HTTP
+
 ### 简单介绍
 
 #### 概念
@@ -52,3 +54,82 @@ http请求报文结构示例.jpg
 |   数据层面   |                 传输数据就会受URL长度的限制                  |              理论上不受限制              |
 |   安全层面   |           在URL里明文传输，可以被缓存，安全性较低            | 在报文里明文传输，不能被缓存，安全性一般 |
 
+
+
+### Cookie
+
+#### 概念
+
+  Cookie 技术通过在请求和响应报文中写入 Cookie 信息来控制客户端的状态。Cookie 会根据从服务器端发送的响应报文内的一个叫做 Set-Cookie 的首部字段信息，通知客户端保存Cookie。当下次客户端再往该服务器发送请求时，客户端会自动在请求报文中加入 Cookie 值后发送出去。服务器端发现客户端发送过来的 Cookie 后，会去检查究竟是从哪一个客户端发来的连接请求，然后对比服务器上的记录，最后得到之前的状态信息。
+
+####  图解
+
+ cookie.png
+
+
+
+#### 客户端请求时携带cookie的示例
+
+请求cookie.png
+
+#### 服务器返回cookie示例
+
+返回cookie.png
+
+
+
+### Session
+
+#### 概念
+
+-   session机制是一种服务器端的机制，服务器使用一种类似于散列表的结构（也可能就是使用散列表）来保存信息。
+
+#### 实现方式
+
+- 当程序需要为某个客户端的请求创建一个session时，服务器首先检查这个客户端的请求里是否已包含了一个session标识(称为session id），如果已包含则说明以前已经为此客户端创建过session，服务器就按照session id把这个session检索出来使用（检索不到，会新建一个），如果客户端请求不包含session id，则为此客户端创建一个session并且生成一个与此session相关联的session id，session id的值应该是一个既不会重复，又不容易被找到规律以仿造的字符串，这个session id将被在本次响应中返回给客户端保存。保存这个session id的方式可以采用cookie，这样在交互过程中浏览器可以自动的按照规则把这个标识发送给服务器。一般这个cookie的名字都是类似于SEEESIONID。但cookie可以被人为的禁止，则必须有其他机制以便在cookie被禁止时仍然能够把session id传递回服务器。
+- 经常被使用的一种技术叫做URL重写，就是把session id直接附加在URL路径的后面。
+
+##### 图解
+
+session.png
+
+##### 图解示例
+
+sessionid.png
+
+
+
+### Cookie和Session的区别
+
+1. cookie数据存放在客户的浏览器上，session数据放在服务器上。
+2. cookie不是很安全，别人可以分析存放在本地的cookie并进行cookie欺骗，考虑到安全应当使用session。
+3. session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能，考虑到减轻服务器性能方面，应当使用cookie
+
+
+
+
+
+#  HTTPS
+
+#####  定义（百度百科）
+
+  HTTPS（全称：Hyper Text Transfer Protocol over Secure Socket Layer 或 Hypertext Transfer Protocol Secure，超文本传输安全协议），是以安全为目标的HTTP通道，简单讲是HTTP的安全版。即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容就需要SSL。
+
+##### 图解
+
+https图解
+
+
+
+#### 相关问题
+
+##### HTTPS和HTTP的区别
+
+- https协议需要到ca申请证书，一般免费证书较少，因而需要一定费用。
+- http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。
+- http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。
+- http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全
+
+ 
+
+ 
