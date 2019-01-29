@@ -1,4 +1,4 @@
-# MySQL
+# MySQL--基础内容
 
   对MySQL做系统的复习。
 
@@ -95,6 +95,75 @@ p5.png
 | 慢查日志(slow_query_log) |                      记录符合条件的查询                      |
 | 二进制日志（binary_log） | 记录全部有效的数据修改日志(记录所有提交的事务) --主从复制，增量备份，数据恢复 |
 |   中继日志(relay_log)    |         用于主从复制，临时存储从主库同步的二进制日志         |
+
+
+
+##### 错误日志（error_log）
+
+- 分析排除MYSQL运行错误：异常重启，启动失败，主从同步异常等。
+- 记录未经授权的访问。
+
+###### 错误日志参数配置
+
+- log_error = 'xxxxxxxxxxxx'   错误日志输出路径
+- log_error_verbosity = [1,2,3]  日志输出级别
+
+p6.png
+
+- log_error_services = [服务组件1;服务组件2]
+
+p7.png
+
+###### 查看错误日志路径:`select @@log_error;`
+
+###### 查看错误日志级别:`select @@log_error_verbosity;`
+
+###### 查看日志服务组件:`select @@log_error_services;`
+
+
+
+##### 常规日志(general_log)：必要时打开，要及时关闭
+
+- 分析客户端发送到MySQL的实际请求。（比如 从客户端连接开始，改变数据库中的信息，到客户端断开连接的整个过程）
+
+###### 常规日志(general_log)的参数配置
+
+- general_log = [ON|OFF]  常规日志开关闭  默认OFF
+- general_log_file = 'xxxxxxxxxxxxxx'  常规日志的存储路径
+- log_output = [FILE|TABLE|NONE]  日志输出形式，如果为TABLE 默认保存在 GENERAL_LOG表中。
+
+
+
+###### 查看常规日志开启状态:`select @@general_log`
+
+###### 查看常规日志文件路径：`select @@general_log_file`
+
+###### 查看常规日志输出形式：`select @@log_output`
+
+
+
+##### 慢查日志(slow_query_log)	:解决性能问题
+
+-  将执行成功并符合条件的查询录到日志中。
+- 找到需要优化的SQL。
+
+
+
+###### 慢查日志(slow_query_log)	的参数配置
+
+- slow_query_log = [ON|OFF]  慢查日志开关  默认OFF
+- slow_query_log_file = 'xxxxxxxxxx' 慢查日志位置
+- long_query_time = xxx（以秒为单位，可以记录到微妙 可以6位小数） 当SQL执行时间超过这个值时，就会被记录到慢查日志中，如果想记录所有SQL 则设置为 0
+- log_queries_not_using_indexes = [ON | OFF ]  将所有没有使用索引的SQL记录到日志中 默认OFF
+- log_slow_admin_statements = [ON | OFF ] 记录操作的管理命令 比如 alter table ,create index 等 默认为OFF
+
+
+
+###### 查询SQL执行时间阈值:`show variables like 'long_query_time'`;
+
+
+
+
 
 
 
